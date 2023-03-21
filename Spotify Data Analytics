@@ -1,0 +1,46 @@
+/* For this project I downloaded Spotify data from Kaggle and used it to answer some questions with SQL. */
+
+/* Creating the table */
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+/* Exploring the data */
+/* What is the average length of the top 10 songs? */
+SELECT avg(duration_ms) AS 'avg length'
+FROM BIT_DB.Spotifydata
+WHERE id BETWEEN 1 AND 10;
+
+/* What is the song with the highest energy rating? What is that track's ranking? */
+SELECT id AS 'ranking', track_name, energy
+FROM BIT_DB.Spotifydata
+ORDER BY energy DESC LIMIT 1;
+
+/* Who are the top 5 artists with the greatest number of songs in the top 50? */
+SELECT artist_name, count(artist_name) AS 'number of songs'
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name
+ORDER BY count(artist_name) DESC
+LIMIT 5;
+
+/* What is the average tempo of the 10 most popular songs? */
+SELECT avg(tempo)
+FROM BIT_DB.Spotifydata
+WHERE id BETWEEN 1 and 10;

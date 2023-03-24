@@ -1,0 +1,15 @@
+/* In this file I have compiled the various Hackerrank problems I've worked through. */
+
+/* Query the two cities in STATION with the shortest and longest CITY names, as well as their respective lengths 
+(i.e.: number of characters in the name). If there is more than one smallest or largest city, choose the one that 
+comes first when ordered alphabetically. */
+
+(SELECT CITY, length(CITY) AS city_length FROM STATION ORDER BY city_length, CITY LIMIT 1) 
+UNION
+(SELECT CITY, length(CITY) AS city_length FROM STATION ORDER BY city_length DESC, CITY LIMIT 1);
+
+/* Query the list of CITY names starting with vowels (i.e., a, e, i, o, or u) from STATION. Your result cannot contain duplicates. */
+SELECT distinct CITY 
+FROM STATION 
+WHERE CITY LIKE 'a%' OR CITY LIKE "e%" OR CITY LIKE "i%" OR CITY LIKE "o%" OR CITY LIKE "u%";
+

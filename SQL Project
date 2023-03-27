@@ -1,0 +1,42 @@
+/* This project examines data from 11 different connected tables. The data includes purchases made by customers, customer details, and employee information. */
+
+/* Show the customers from the US */
+SELECT FirstName, LastName, CustomerId, Country
+FROM chinook.customers
+WHERE Country = 'USA';
+
+/* Find the invoices of customers who are from the US, including their name, invoiceid, date of invoice and billing country. */
+SELECT cust.FirstName, cust.LastName, inv.InvoiceId, inv.InvoiceDate, inv.BillingCountry
+FROM chinook.customers cust
+RIGHT JOIN chinook.invoices inv
+ON cust.Customerid = inv.invoiceid
+WHERE inv.BillingCountry = 'USA';
+
+/* Find the employees that are part of the sales team and their contact information. */
+SELECT EmployeeId, FirstName, LastName, Title, Phone, Email
+FROM chinook.employees
+WHERE Title LIKE '%sales%';
+
+/* Show the invoices associated with each sales agent. */
+SELECT em.FirstName, em.LastName, inv.InvoiceId
+FROM chinook.employees em
+JOIN chinook.customers cust ON em.EmployeeId = cust.SupportRepId
+JOIN chinook.invoices inv ON cust.CustomerId = inv.InvoiceId
+WHERE em.Title LIKE '%sales%'
+GROUP BY em.EmployeeId;
+
+/* Show the invoice total, customer name, country and sales agent name for all invoices and customers.*/
+SELECT cust.FirstName AS 'CustomerFirst', cust.LastName AS 'CustomerLast', cust.Country, inv.Total, em.FirstName AS 'EmployeeFirst', em.LastName AS 'EmployeeLast'
+FROM chinook.employees em
+JOIN chinook.customers cust ON em.EmployeeId = cust.SupportRepId
+JOIN chinook.invoices inv ON cust.CustomerId = inv.InvoiceId
+WHERE em.Title LIKE '%sales%'
+ORDER BY em.EmployeeId;
+
+/* Show the artist name and purchased track name with each invoice line ID. */
+SELECT art.Name, track.Name, invi.InvoiceLineId
+FROM chinook.invoice_items invi
+LEFT JOIN chinook.tracks track ON invi.trackid = track.trackid
+INNER JOIN chinook.albums alb ON track.albumid = alb.albumid
+LEFT JOIN chinook.artists art ON alb.artistid = art.artistid
+GROUP BY art.name;
